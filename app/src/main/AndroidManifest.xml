@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.gordbilyi.jellyfish">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:allowBackup="false"
+        android:icon="@drawable/ic_message_white_24dp"
+        android:supportsRtl="false"
+        android:theme="@style/AppTheme.NoActionBar">
+
+        <!-- stopWithTask will stop the service when activity is killed by swiping -->
+        <service
+            android:name="com.gordbilyi.jellyfish.im.service.MessageService"
+            android:enabled="true"
+            android:exported="false"
+            android:stopWithTask="true" />
+
+        <activity
+            android:name="com.gordbilyi.jellyfish.im.ui.activity.ChatsActivity"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.gordbilyi.jellyfish.im.ui.activity.MessagesActivity"
+            android:parentActivityName="com.gordbilyi.jellyfish.im.ui.activity.ChatsActivity" />
+
+        <receiver
+            android:name=".im.service.receiver.DeviceBootReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".im.service.receiver.ConnectivityChangeReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
+        <provider
+            android:name="com.gordbilyi.jellyfish.im.db.provider.MessageProvider"
+            android:authorities="com.gordbilyi.jellyfish.message.provider"
+            android:enabled="true"
+            android:exported="false" />
+        <provider
+            android:name="com.gordbilyi.jellyfish.im.db.provider.ChatProvider"
+            android:authorities="com.gordbilyi.jellyfish.chat.provider"
+            android:enabled="true"
+            android:exported="false" />
+    </application>
+
+</manifest>
